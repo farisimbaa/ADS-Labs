@@ -1,4 +1,4 @@
-// TASK 01: Singly Linked List
+// TASK 02: Doubly Linked List
 
 #include<iostream>
 using namespace std;
@@ -15,19 +15,29 @@ int main(){
   Node node3 = Node();
   
   node1.data = "test1";
-  node1.ptr = &node2;
+  node1.next_ptr = &node2;
+  node1.prev_ptr = nullptr;
   
   node2.data = "test2";
-  node2.ptr = &node3;
+  node2.next_ptr = &node3;
+  node2.prev_ptr = &node1;
   
   node3.data = "test3";
-  node3.ptr = NULL;
+  node3.next_ptr = nullptr;
+  node3.prev_ptr = &node2;
   
   
   Node* current = &node1;
     while (current != nullptr) {
         cout << current->data << " ";
-        current = current->ptr;
+        current = current->next_ptr;
+    }
+    cout << endl;
+    
+    current = &node3;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->prev_ptr;
     }
     cout << endl;
 }
