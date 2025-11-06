@@ -20,8 +20,7 @@ bool isEmpty() {
 // Check if queue is full (no more memory)
 bool isFull() {
     Node* testNode = new(nothrow) Node;
-    if (testNode == nullptr)
-        return true;
+    if (testNode == nullptr) return true;
     delete testNode;
     return false;
 }

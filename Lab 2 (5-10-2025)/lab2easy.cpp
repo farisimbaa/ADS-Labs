@@ -8,42 +8,41 @@
 #include <algorithm>
 using namespace std;
 
-int main() {
-    int m, n;
-    cout << "Enter number of rows (m): ";
-    cin >> m;
-    cout << "Enter number of columns (n): ";
-    cin >> n;
-
-    vector<vector<int>> matrix(m, vector<int>(n));
-    cout << "Enter the elements of the matrix:\n";
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> matrix[i][j];
-        }
-    }
-
+void sortMatrix(vector<vector<int>>& mat) {
+    vector<int> temp;
+    
     // Flatten the matrix into a single vector
-    vector<int> flat_matrix;
-    for (const auto& row : matrix) {
-        flat_matrix.insert(flat_matrix.end(), row.begin(), row.end());
-    }
-
-    // Sort the flattened vector
-    sort(flat_matrix.begin(), flat_matrix.end());
-
-    // Reconstruct the sorted matrix
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            matrix[i][j] = flat_matrix[i * n + j];
+    for (auto& row : mat) {
+        for (int x : row) {
+            temp.push_back(x);
         }
     }
+    
+    // Sort the vector
+    sort(temp.begin(), temp.end());
+    
+    // Put sorted values back into the matrix
+    int i = 0;
+    for (auto& row : mat) {
+        for (int& x : row) {
+            x = temp[i++];
+        }
+    }
+}
 
-    // Print the sorted matrix
-    cout << "Sorted matrix in strict order:\n";
+int main() {
+    vector<vector<int>> matrix = {
+        {10, 20, 15},
+        {21, 30, 14},
+        {7, 16, 32}
+    };
+
+    sortMatrix(matrix);
+
+    cout << "Sorted Matrix:" << endl;
     for (const auto& row : matrix) {
-        for (const auto& elem : row) {
-            cout << elem << " ";
+        for (int x : row) {
+            cout << x << " ";
         }
         cout << endl;
     }

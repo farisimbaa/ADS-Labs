@@ -9,53 +9,48 @@
 #include <climits>
 using namespace std;
 
-int minInitialPoints(const vector<vector<int>>& grid) {
-    int m = grid.size();
-    int n = grid[0].size();
-    vector<vector<int>> dp(m, vector<int>(n, INT_MAX));
+// Recursive function to find minimum initial points needed at cell i,j
+int minPoint(int i, int j, vector<vector<int>> &points) {
 
-    // Base case: at the destination cell (m-1, n-1)
-    dp[m-1][n-1] = max(1, 1 - grid[m-1][n-1]);
+    // Base case 1: Out of bounds
+    if (i < 0 || i == points.size() || j < 0 || j == points[0].size())
+        return INT_MAX;
 
-    // Fill the last row
-    for (int j = n - 2; j >= 0; j--) {
-        dp[m-1][j] = max(1, dp[m-1][j+1] - grid[m-1][j]);
+    // Base case 2: At destination cell (bottom-right)
+    if (i == points.size() - 1 && j == points[0].size() - 1) {
+
+        if (points[i][j] > 0)
+            return 1;
+
+        // If negative, we need |value| + 1 points to stay positive
+        return abs(points[i][j]) + 1;
     }
 
-    // Fill the last column
-    for (int i = m - 2; i >= 0; i--) {
-        dp[i][n-1] = max(1, dp[i+1][n-1] - grid[i][n-1]);
-    }
+    // Recursively find minimum points needed for right and down paths
+    int right = minPoint(i, j + 1, points);
+    int down = minPoint(i + 1, j, points);
 
-    // Fill the rest of the dp table
-    for (int i = m - 2; i >= 0; i--) {
-        for (int j = n - 2; j >= 0; j--) {
-            int down = max(1, dp[i+1][j] - grid[i][j]);
-            int right = max(1, dp[i][j+1] - grid[i][j]);
-            dp[i][j] = min(down, right);
-        }
-    }
+    // Take minimum of both paths
+    int minExitPoints = min(right, down);
 
-    return dp[0][0];
+    return max(1, minExitPoints - points[i][j]);
+}
+
+// Helper function to initiate the recursive solution
+int minPoints(vector<vector<int>> points) {
+    int m = points.size(), n = points[0].size();
+
+    return minPoint(0, 0, points);
 }
 
 int main() {
-    int m, n;
-    cout << "Enter number of rows (m): ";
-    cin >> m;
-    cout << "Enter number of columns (n): ";
-    cin >> n;
+    vector<vector<int>> points = {
+        {-2, -3, 3},
+        {-5, -10, 1},
+        {10, 30, -5}
+    };
 
-    vector<vector<int>> grid(m, vector<int>(n));
-    cout << "Enter the elements of the grid:\n";
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> grid[i][j];
-        }
-    }
-
-    int result = minInitialPoints(grid);
-    cout << "Minimum initial points required: " << result << endl;
+    cout << "Minimum initial points needed: " << minPoints(points) << endl;
 
     return 0;
 }
