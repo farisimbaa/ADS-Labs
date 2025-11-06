@@ -14,11 +14,12 @@ int minPoint(int i, int j, vector<vector<int>> &points) {
 
     // Base case 1: Out of bounds
     if (i < 0 || i == points.size() || j < 0 || j == points[0].size())
-        return INT_MAX;
+        return INT_MAX; // Return a large value for invalid paths
 
     // Base case 2: At destination cell (bottom-right)
     if (i == points.size() - 1 && j == points[0].size() - 1) {
 
+        // If positive or zero, need at least 1 point to stay positive
         if (points[i][j] > 0)
             return 1;
 
