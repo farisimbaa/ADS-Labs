@@ -1,3 +1,6 @@
+Name: Amirul Faris bin Muzzammil
+ID: 24009790
+
 | Task Description                    | Date Completed |
 |-------------------------------------|----------------|
 | Lab 1: Array                         | 25-09-2025     |
